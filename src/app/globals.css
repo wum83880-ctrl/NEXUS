@@ -1,0 +1,203 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-nx-brand: var(--nx-brand);
+  --color-nx-success: var(--nx-success);
+  --color-nx-warn: var(--nx-warn);
+  --color-nx-error: var(--nx-error);
+}
+
+/* 暗色主题 — 告别纯黑，用深蓝灰层次 */
+:root {
+  --radius: 0.75rem;
+  --nx-bg-base: #1a1b26;
+  --nx-bg-elevated: #24253a;
+  --nx-bg-sunken: #14151f;
+  --nx-bg-hover: #2e2f48;
+  --nx-brand: #7aa2f7;
+  --nx-brand-2: #bb9af7;
+  --nx-brand-soft: #7aa2f733;
+  --nx-success: #9ece6a;
+  --nx-warn: #e0af68;
+  --nx-error: #f7768e;
+  --nx-cyan: #7dcfff;
+  --nx-rose: #f7768e;
+
+  --background: var(--nx-bg-base);
+  --foreground: #c0caf5;
+  --card: var(--nx-bg-elevated);
+  --card-foreground: #c0caf5;
+  --popover: #1f2034;
+  --popover-foreground: #c0caf5;
+  --primary: var(--nx-brand);
+  --primary-foreground: #1a1b26;
+  --secondary: #2e2f48;
+  --secondary-foreground: #c0caf5;
+  --muted: #1f2034;
+  --muted-foreground: #565f89;
+  --accent: #2e2f48;
+  --accent-foreground: #c0caf5;
+  --destructive: var(--nx-error);
+  --border: #414868;
+  --input: #414868;
+  --ring: var(--nx-brand);
+  --chart-1: #7aa2f7;
+  --chart-2: #9ece6a;
+  --chart-3: #e0af68;
+  --chart-4: #f7768e;
+  --chart-5: #bb9af7;
+  --sidebar: var(--nx-bg-sunken);
+  --sidebar-foreground: #a9b1d6;
+  --sidebar-primary: var(--nx-brand);
+  --sidebar-primary-foreground: #1a1b26;
+  --sidebar-accent: #2e2f48;
+  --sidebar-accent-foreground: #c0caf5;
+  --sidebar-border: #414868;
+  --sidebar-ring: var(--nx-brand);
+}
+
+/* 亮色主题 */
+.light {
+  --nx-bg-base: #f5f6fa;
+  --nx-bg-elevated: #ffffff;
+  --nx-bg-sunken: #ebecf2;
+  --nx-brand: #2563eb;
+  --nx-brand-2: #7c3aed;
+  --background: var(--nx-bg-base);
+  --foreground: #1a1b26;
+  --card: var(--nx-bg-elevated);
+  --card-foreground: #1a1b26;
+  --popover: #ffffff;
+  --popover-foreground: #1a1b26;
+  --primary: var(--nx-brand);
+  --primary-foreground: #ffffff;
+  --secondary: #ebecf2;
+  --muted: #ebecf2;
+  --muted-foreground: #6b7280;
+  --accent: #ebecf2;
+  --destructive: #dc2626;
+  --border: #d4d6e0;
+  --input: #d4d6e0;
+  --sidebar: var(--nx-bg-sunken);
+  --sidebar-foreground: #3f3f46;
+  --sidebar-accent: #ebecf2;
+  --sidebar-border: #d4d6e0;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html, body { height: 100%; }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(80% 50% at 50% -10%, #7aa2f715 0%, transparent 60%),
+      radial-gradient(60% 40% at 100% 0%, #bb9af712 0%, transparent 55%),
+      linear-gradient(180deg, var(--nx-bg-base) 0%, #14151f 100%);
+    background-attachment: fixed;
+  }
+  .light body {
+    background-image:
+      radial-gradient(80% 50% at 50% -10%, #2563eb0a 0%, transparent 60%),
+      radial-gradient(60% 40% at 100% 0%, #7c3aed08 0%, transparent 55%),
+      linear-gradient(180deg, var(--nx-bg-base) 0%, #ebecf2 100%);
+  }
+}
+
+.nx-scroll { scrollbar-width: thin; scrollbar-color: transparent transparent; transition: scrollbar-color 0.2s; }
+.nx-scroll:hover { scrollbar-color: #414868 transparent; }
+.nx-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.nx-scroll::-webkit-scrollbar-track { background: transparent; }
+.nx-scroll::-webkit-scrollbar-thumb { background: transparent; border-radius: 8px; transition: background 0.2s; }
+.nx-scroll:hover::-webkit-scrollbar-thumb { background: #414868; }
+
+.nx-brand-grad { background: linear-gradient(135deg, var(--nx-brand) 0%, var(--nx-brand-2) 100%); }
+.nx-brand-grad-text { background: linear-gradient(135deg, var(--nx-brand) 0%, var(--nx-brand-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nx-glow { box-shadow: 0 0 0 1px var(--nx-brand-soft), 0 8px 32px -8px #7aa2f744; }
+.nx-grid-bg { background-image: linear-gradient(to right, #ffffff08 1px, transparent 1px), linear-gradient(to bottom, #ffffff08 1px, transparent 1px); background-size: 32px 32px; }
+.nx-aurora { background: radial-gradient(60% 80% at 20% 10%, #7aa2f71f 0%, transparent 60%), radial-gradient(50% 70% at 90% 20%, #bb9af718 0%, transparent 55%), radial-gradient(70% 60% at 50% 100%, #9ece6a10 0%, transparent 60%); }
+
+@keyframes nx-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.nx-caret::after { content: "▍"; margin-left: 1px; color: var(--nx-brand); animation: nx-blink 1s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  .nx-caret::after { content: ""; }
+}
+
+.nx-prose { color: #c0caf5; line-height: 1.65; word-wrap: break-word; }
+.nx-prose p { margin: 0.5em 0; }
+.nx-prose p:first-child { margin-top: 0; }
+.nx-prose p:last-child { margin-bottom: 0; }
+.nx-prose h1, .nx-prose h2, .nx-prose h3, .nx-prose h4 { font-weight: 600; color: #c0caf5; margin: 1em 0 0.5em; }
+.nx-prose h1 { font-size: 1.4em; }
+.nx-prose h2 { font-size: 1.25em; }
+.nx-prose h3 { font-size: 1.1em; }
+.nx-prose ul, .nx-prose ol { margin: 0.5em 0; padding-left: 1.5em; }
+.nx-prose li { margin: 0.25em 0; }
+.nx-prose ul li { list-style: disc; }
+.nx-prose ol li { list-style: decimal; }
+.nx-prose a { color: var(--nx-brand); text-decoration: none; }
+.nx-prose a:hover { text-decoration: underline; }
+.nx-prose code { font-family: var(--font-mono), monospace; font-size: 0.875em; background: #41486840; padding: 0.15em 0.4em; border-radius: 4px; color: #bb9af7; }
+.nx-prose pre { background: #14151f; border: 1px solid #414868; border-radius: 10px; padding: 0.9em 1em; overflow-x: auto; margin: 0.75em 0; font-size: 0.85em; position: relative; }
+.nx-prose pre code { background: transparent; padding: 0; color: #c0caf5; }
+.nx-prose blockquote { border-left: 3px solid var(--nx-brand); padding-left: 1em; margin: 0.5em 0; color: #565f89; }
+.nx-prose table { border-collapse: collapse; margin: 0.75em 0; }
+.nx-prose th, .nx-prose td { border: 1px solid #414868; padding: 0.4em 0.7em; }
+.nx-prose th { background: #2e2f48; font-weight: 600; }
+.nx-prose hr { border: none; border-top: 1px solid #414868; margin: 1em 0; }
+
+.light .nx-prose { color: #3f3f46; }
+.light .nx-prose h1, .light .nx-prose h2, .light .nx-prose h3 { color: #1a1b26; }
+.light .nx-prose code { background: #0000000a; color: #7c3aed; }
+.light .nx-prose pre { background: #f4f5f7; border-color: #d4d6e0; }
+.light .nx-prose pre code { color: #1a1b26; }
+.light .nx-prose blockquote { color: #6b7280; }
+.light .nx-prose th, .light .nx-prose td { border-color: #d4d6e0; }
+.light .nx-prose th { background: #ebecf2; }
+
+/* ── 代码块复制按钮（markdown.tsx 动态注入） ── */
+.nx-codeblock:hover .nx-copy-btn { opacity: 1 !important; }
+.nx-codeblock .nx-copy-btn:hover { color: var(--foreground); border-color: var(--nx-brand); }

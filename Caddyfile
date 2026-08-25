@@ -1,0 +1,31 @@
+:81 {
+	@transform_port_3003 {
+		query XTransformPort=3003
+	}
+
+	@bad_transform_port {
+		query XTransformPort=*
+	}
+
+	handle @transform_port_3003 {
+		reverse_proxy localhost:3003 {
+			header_up Host {host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+			header_up X-Real-IP {remote_host}
+		}
+	}
+
+	handle @bad_transform_port {
+		respond "Bad XTransformPort" 400
+	}
+
+	handle {
+		reverse_proxy localhost:3000 {
+			header_up Host {host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+			header_up X-Real-IP {remote_host}
+		}
+	}
+}

@@ -1,0 +1,13 @@
+{
+  "name": "nexus-stream",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot index.ts"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.1",
+    "@types/ws": "^8.5.10"
+  }
+}

@@ -1,0 +1,165 @@
+// NEXUS Prisma schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  title     String   @default("新建会话")
+  pinned    Boolean  @default(false)
+  tags      String   @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events    SessionEvent[]
+  decisions Decision[]
+  graph     CodeGraphNode[]
+
+  @@index([updatedAt])
+  @@index([pinned])
+}
+
+model CodeGraphNode {
+  id        String   // 相对路径
+  sessionId String
+  summary   String
+  kind      String   @default("file")
+  ext       String   @default("")
+  loc       Int      @default(0)
+  imports   String   @default("[]") // 本地依赖（JSON 数组，确定性提取）
+  updatedAt DateTime @updatedAt
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@id([sessionId, id])
+}
+
+model SessionEvent {
+  id        String   @id @default(cuid())
+  sessionId String
+  seq       Int
+  type      String
+  data      String
+  createdAt DateTime @default(now())
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, seq])
+}
+
+model Decision {
+  id           String   @id @default(cuid())
+  sessionId    String
+  turn         Int
+  provider     String   @default("")
+  model        String   @default("")
+  protocol     String   @default("native")
+  thinking     String   @default("")
+  hasToolCalls Boolean  @default(false)
+  toolCalls    String   @default("[]")
+  contextSummary String @default("")
+  durationMs   Int      @default(0)
+  inputTokens  Int      @default(0)
+  outputTokens Int      @default(0)
+  createdAt    DateTime @default(now())
+  session      Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, turn])
+}
+
+model Memory {
+  id        String   @id @default(cuid())
+  namespace String   @default("default")
+  key       String
+  value     String
+  pinned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([namespace, key])
+  @@index([namespace])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model GroupRoom {
+  id        String   @id @default(cuid())
+  name      String   @default("新建群聊")
+  members   String   @default("[]")
+  task      String   @default("")
+  status    String   @default("idle")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([updatedAt])
+}
+
+model GroupMessage {
+  id        String   @id @default(cuid())
+  roomId    String
+  senderId  String
+  senderName String
+  senderRole String  @default("")
+  color     String   @default("blue")
+  content   String
+  thinking  String   @default("")
+  round     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([roomId, createdAt])
+}
+
+model CustomSkill {
+  id        String   @id @default(cuid())
+  name      String
+  icon      String   @default("Sparkles")
+  description String @default("")
+  category  String   @default("通用")
+  prompt    String
+  suggestedTools String @default("[]")
+  starter   String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model ToolApproval {
+  id        String   @id @default(cuid())
+  sessionId String
+  roomId    String?
+  toolCallId String
+  toolName  String
+  arguments String
+  status    String   @default("pending")
+  riskLevel String   @default("high")
+  modeAtRequest String @default("default")
+  triggerMessage String @default("") // 触发该审批的用户消息原文（批准后精确回放）
+  reason    String?
+  createdAt DateTime @default(now())
+  resolvedAt DateTime?
+
+  @@index([sessionId, status])
+}
+
+model Snapshot {
+  id             String   @id @default(cuid())
+  sessionId      String?
+  roomId         String?
+  label          String   @default("快照")
+  reason         String   @default("manual")
+  turn           Int?
+  eventSeq       Int?
+  data           String   @default("{}")
+  fileBackupPath String?
+  createdAt      DateTime @default(now())
+
+  @@index([sessionId, createdAt])
+  @@index([roomId, createdAt])
+}

@@ -1,0 +1,5 @@
+#!/bin/sh
+# NEXUS 命令行入口 (Linux/macOS)
+# 用法: ./nexus web | setup | clean | doctor | help
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+exec node "$SCRIPT_DIR/scripts/nexus.mjs" "$@"
